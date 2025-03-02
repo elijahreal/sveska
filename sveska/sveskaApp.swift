@@ -13,5 +13,6 @@ struct sveskaApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: [Note.self, Page.self ])
     }
 }
