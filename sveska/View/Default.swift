@@ -25,19 +25,18 @@ struct Default: View {
         NavigationSplitView {
             List(selection: $selectedTab) {
                 Section("Categories") {
-                    Text("All")
+                    Label("All", systemImage: "square.stack")
                         .tag("All")
-                    Text("Recent")
-                        .tag("Recent")
-                    Text("Favorites")
+                    Label("Favorites", systemImage: "star")
                         .tag("Favorites")
-                    Text("Archive")
+                    Label("Archive", systemImage: "trash")
                         .tag("Archive")
                 }
                 
                 Section("Pages") {
                     ForEach(pages) { page in
-                        Text(page.title)
+                        Label(page.title, systemImage: "book.pages")
+                            .tint(.gray)
                             .tag(page.title)
                             .contextMenu {
                                 Button("Rename") {
@@ -58,18 +57,17 @@ struct Default: View {
                 addPage.toggle()
             } label: {
                 HStack(alignment: .center, spacing: 2) {
-                    Image(systemName: "text.page")
+                    Image(systemName: "plus")
                     Text("New Page")
                 }
                 .frame(maxWidth: .infinity, minHeight: 25)
             }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(.borderless)
             .padding(10)
             .navigationSplitViewColumnWidth(min: 120, ideal: 160, max:250)
         } detail: {
-            
+            NoteView(tab: selectedTab, allPages: pages)
         }
-        .navigationSplitViewColumnWidth(min: 120, ideal: 160, max:300)
         .navigationTitle(selectedTab ?? "Notes")
         .alert("Add Page", isPresented: $addPage) {
             TextField("Title", text: $pageTitle)
@@ -106,6 +104,14 @@ struct Default: View {
                     context.delete(requestedPage)
                     pageTitle = ""
                     self.requestedPage = nil
+                }
+            }
+        }
+        .toolbar {
+            HStack {
+                Button("New Note", systemImage: "plus") {
+                    let note = Note(text: "")
+                    context.insert(note)
                 }
             }
         }

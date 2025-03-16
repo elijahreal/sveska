@@ -12,14 +12,14 @@ import SwiftData
 class Note {
     
     var text: String
-    var lastModified: Date
     var favorite: Bool = false
     var archived: Bool = false
+    var creationDate: Date
     var page: Page?
     
     init(text: String, page: Page? = nil) {
         self.text = text
-        self.lastModified = Date()
+        self.creationDate = Date()
         self.page = page
     }
 }
